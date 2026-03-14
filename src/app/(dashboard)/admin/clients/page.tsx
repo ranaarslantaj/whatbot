@@ -64,7 +64,7 @@ export default function AdminClientsPage() {
       return (<div className="flex items-center gap-1">
         <Link href={`/admin/clients/${c.id}`}><Button variant="ghost" size="sm">Manage</Button></Link>
         <ImpersonateButton clientId={c.id} clientName={c.businessName} />
-        <DropdownMenu><DropdownMenuTrigger><Button variant="ghost" size="icon" className="h-8 w-8"><MoreHorizontal className="h-4 w-4" /></Button></DropdownMenuTrigger>
+        <DropdownMenu><DropdownMenuTrigger className="inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-zinc-100"><MoreHorizontal className="h-4 w-4" /></DropdownMenuTrigger>
           <DropdownMenuContent align="end"><DropdownMenuItem onClick={() => setSuspendDialog({ open: true, client: c })}>{c.status === 'suspended' ? <><CheckCircle className="mr-2 h-4 w-4" /> Activate</> : <><Ban className="mr-2 h-4 w-4" /> Suspend</>}</DropdownMenuItem></DropdownMenuContent>
         </DropdownMenu></div>);
     }},

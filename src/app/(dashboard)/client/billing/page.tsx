@@ -87,8 +87,8 @@ export default function BillingPage() {
               <CardDescription>Your current plan and available upgrades</CardDescription>
             </div>
             <Dialog open={upgradeOpen} onOpenChange={setUpgradeOpen}>
-              <DialogTrigger>
-                <Button><TrendingUp className="mr-2 h-4 w-4" /> Change Plan</Button>
+              <DialogTrigger className="inline-flex shrink-0 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-xs hover:bg-primary/90">
+                <TrendingUp className="mr-2 h-4 w-4" /> Change Plan
               </DialogTrigger>
               <DialogContent className="max-w-2xl">
                 <DialogHeader>

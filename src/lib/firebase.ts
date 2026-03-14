@@ -1,5 +1,5 @@
-import { initializeApp, getApps } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { initializeApp, getApps, deleteApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, serverTimestamp } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
@@ -19,3 +19,19 @@ export const db = getFirestore(app);
 export const storage = getStorage(app);
 export { serverTimestamp };
 export default app;
+
+/**
+ * Creates a Firebase Auth user using a secondary app instance
+ * so the current admin session is NOT signed out.
+ */
+export async function createUserWithoutSignIn(email: string, password: string): Promise<string> {
+  const secondaryApp = initializeApp(firebaseConfig, 'secondary-' + Date.now());
+  try {
+    const secondaryAuth = getAuth(secondaryApp);
+    const credential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+    await secondaryAuth.signOut();
+    return credential.user.uid;
+  } finally {
+    await deleteApp(secondaryApp);
+  }
+}

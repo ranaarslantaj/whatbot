@@ -36,10 +36,8 @@ export function TopBar({ onToggleSidebar }: { onToggleSidebar: () => void; sideb
         <div className="flex-1" />
         <div className="flex items-center gap-3">
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8"><AvatarFallback className="bg-zinc-200 text-xs">{initials}</AvatarFallback></Avatar>
-              </Button>
+            <DropdownMenuTrigger className="relative h-8 w-8 rounded-full hover:bg-zinc-100 flex items-center justify-center">
+              <Avatar className="h-8 w-8"><AvatarFallback className="bg-zinc-200 text-xs">{initials}</AvatarFallback></Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <div className="px-2 py-1.5">

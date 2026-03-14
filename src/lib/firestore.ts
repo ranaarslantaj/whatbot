@@ -50,6 +50,26 @@ export async function updateAgentAssignments(agentId: string, clientIds: string[
   await updateDoc(doc(db, 'users', agentId), { assignedClientIds: clientIds });
 }
 
+export async function updateUser(uid: string, data: Partial<User>) {
+  await updateDoc(doc(db, 'users', uid), data as DocumentData);
+}
+
+export async function deleteUser(uid: string) {
+  await deleteDoc(doc(db, 'users', uid));
+}
+
+export async function createUserDoc(uid: string, data: Omit<User, 'uid'>) {
+  const { setDoc } = await import('firebase/firestore');
+  await setDoc(doc(db, 'users', uid), { ...data, createdAt: serverTimestamp(), lastLoginAt: serverTimestamp() });
+}
+
+export function subscribeTeamMembers(clientId: string, callback: (members: User[]) => void) {
+  const q = query(collection(db, 'users'), where('clientId', '==', clientId));
+  return onSnapshot(q, (snapshot) => {
+    callback(snapshot.docs.map((d) => ({ ...d.data(), uid: d.id } as User)));
+  });
+}
+
 // ── Tickets ──────────────────────────────────────────
 
 export function subscribeTickets(
