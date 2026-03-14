@@ -42,6 +42,9 @@ export async function resetPassword(email: string) {
 }
 
 export async function signOutUser() {
+  // Reset auth store to initial state so next login doesn't see stale initialized=true + user=null
+  const { useAuthStore } = await import('@/store/authStore');
+  useAuthStore.getState().reset();
   await fetch('/api/auth/session', { method: 'DELETE' });
   await firebaseSignOut(auth);
 }

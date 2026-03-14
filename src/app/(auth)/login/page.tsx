@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { signInWithEmail, getRoleRedirectPath, resetPassword } from '@/lib/auth';
+import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
@@ -37,9 +38,11 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginForm) => {
     setLoading(true);
     try {
-      const user = await signInWithEmail(data.email, data.password);
+      const userData = await signInWithEmail(data.email, data.password);
+      // Set user in store BEFORE navigating so dashboard doesn't bounce back
+      useAuthStore.getState().setUser(userData);
       toast.success('Welcome back!');
-      router.push(getRoleRedirectPath(user.role));
+      router.push(getRoleRedirectPath(userData.role));
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Invalid credentials';
       toast.error(message);
