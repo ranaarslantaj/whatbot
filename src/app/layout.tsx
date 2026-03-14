@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
-import { AuthProvider } from "@/context/AuthContext";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  variable: "--font-outfit",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "WhatBot | Premium WhatsApp Automation",
-  description: "Intelligent WhatsApp Automation for E-commerce by Nexis Tech Solutions",
+  title: "WhatBot",
+  description: "Multi-role WhatsApp Business automation dashboard",
 };
 
 export default function RootLayout({
@@ -20,10 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={outfit.className}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
+      >
+        {children}
       </body>
     </html>
   );
