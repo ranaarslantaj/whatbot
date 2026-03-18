@@ -47,7 +47,7 @@ export default function TicketThreadPage() {
       </div>
       <Card><CardContent className="p-4"><p className="text-sm">{ticket.description}</p></CardContent></Card>
       <div className="space-y-3">
-        {ticket.messages?.map((m, i) => (<div key={i} className={cn('flex', m.senderRole === 'support_agent' || m.senderRole === 'super_admin' ? 'justify-end' : 'justify-start')}><div className={cn('max-w-[70%] rounded-lg p-3', m.senderRole === 'support_agent' || m.senderRole === 'super_admin' ? 'bg-blue-500 text-white' : 'bg-zinc-100')}><p className="text-xs font-medium mb-1 opacity-75">{m.senderName}</p><p className="text-sm">{m.message}</p></div></div>))}
+        {ticket.messages?.map((m, i) => (<div key={i} className={cn('flex', m.senderRole === 'support_agent' || m.senderRole === 'super_admin' ? 'justify-end' : 'justify-start')}><div className={cn('max-w-[70%] rounded-xl p-3', m.senderRole === 'support_agent' || m.senderRole === 'super_admin' ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground')}><p className="text-xs font-medium mb-1 opacity-75">{m.senderName}</p><p className="text-sm">{m.message}</p></div></div>))}
       </div>
       {ticket.status !== 'closed' && <div className="flex gap-2"><Textarea placeholder="Type your reply..." value={reply} onChange={(e) => setReply(e.target.value)} className="min-h-[80px]" /><Button onClick={handleSend} disabled={sending || !reply.trim()} className="self-end"><Send className="h-4 w-4" /></Button></div>}
     </div>

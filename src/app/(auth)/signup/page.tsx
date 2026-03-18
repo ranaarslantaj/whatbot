@@ -119,11 +119,11 @@ export default function SignupPage() {
           {[1, 2, 3].map((s) => (
             <div key={s} className="flex items-center gap-2">
               <div className={cn('flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium',
-                step > s ? 'bg-emerald-600 text-white' : step === s ? 'bg-emerald-600 text-white' : 'bg-zinc-200 text-zinc-500'
+                step > s ? 'bg-primary text-primary-foreground' : step === s ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
               )}>
                 {step > s ? <Check className="h-4 w-4" /> : s}
               </div>
-              {s < 3 && <div className={cn('h-0.5 w-12', step > s ? 'bg-emerald-600' : 'bg-zinc-200')} />}
+              {s < 3 && <div className={cn('h-0.5 w-12', step > s ? 'bg-primary' : 'bg-border')} />}
             </div>
           ))}
         </div>
@@ -132,7 +132,7 @@ export default function SignupPage() {
         {step === 1 && (
           <Card className="shadow-lg">
             <CardHeader className="text-center">
-              <Image src="/logo.png" alt="WhatBot" width={120} height={120} className="mx-auto mb-2 h-[120px] w-[120px] object-contain" />
+              <Image src="/images/logo.png" alt="WhatBot" width={120} height={120} className="mx-auto mb-2 h-[120px] w-[120px] object-contain" />
               <CardTitle className="text-xl">Create your account</CardTitle>
               <CardDescription>Start automating your WhatsApp business</CardDescription>
             </CardHeader>
@@ -155,7 +155,7 @@ export default function SignupPage() {
                 <Label>Password</Label>
                 <div className="relative">
                   <Input type={showPassword ? 'text' : 'password'} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="pr-10" />
-                  <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600" onClick={() => setShowPassword(!showPassword)}>
+                  <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
@@ -249,7 +249,7 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              <div className="rounded-lg bg-zinc-50 p-4 text-sm text-muted-foreground">
+              <div className="rounded-lg bg-muted/50 p-4 text-sm text-muted-foreground">
                 <p>After creating your account, you'll be taken to the setup wizard to connect your WhatsApp Business number and configure your store integration.</p>
               </div>
 

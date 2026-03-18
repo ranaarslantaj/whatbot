@@ -71,7 +71,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-zinc-50 via-emerald-50/30 to-zinc-100 p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center">
-          <Image src="/logo.png" alt="WhatBot" width={120} height={120} className="mx-auto mb-2 h-[120px] w-[120px] object-contain" />
+          <Image src="/images/logo.png" alt="WhatBot" width={120} height={120} className="mx-auto mb-2 h-[120px] w-[120px] object-contain" />
           <CardTitle className="text-xl">Sign in to your dashboard</CardTitle>
         </CardHeader>
         <CardContent>
@@ -90,7 +90,7 @@ export default function LoginPage() {
               </div>
               <div className="relative">
                 <Input id="password" type={showPassword ? 'text' : 'password'} placeholder="••••••••" {...register('password')} className="pr-10" />
-                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600" onClick={() => setShowPassword(!showPassword)}>
+                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>

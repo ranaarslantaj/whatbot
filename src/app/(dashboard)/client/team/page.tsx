@@ -167,7 +167,7 @@ export default function TeamPage() {
         if (member.uid === user?.uid) return null;
         return (
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-zinc-100">
+            <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-accent">
               <MoreHorizontal className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

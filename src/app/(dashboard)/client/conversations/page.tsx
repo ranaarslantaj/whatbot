@@ -65,9 +65,9 @@ export default function ConversationsPage() {
       {filtered.length === 0 ? (
         <EmptyState icon={MessagesSquare} title="No conversations" description="No conversations match your filters." />
       ) : (
-        <div className="divide-y rounded-lg border bg-white">
+        <div className="divide-y rounded-lg border bg-card">
           {filtered.map((conv) => (
-            <div key={conv.id} className="flex items-center justify-between gap-4 p-4 hover:bg-zinc-50 transition-colors cursor-pointer" onClick={() => router.push(`/client/conversations/${conv.id}`)}>
+            <div key={conv.id} className="flex items-center justify-between gap-4 p-4 hover:bg-accent transition-colors cursor-pointer" onClick={() => router.push(`/client/conversations/${conv.id}`)}>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <p className="font-medium truncate">{conv.customerName}</p>

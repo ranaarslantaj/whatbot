@@ -68,7 +68,7 @@ export default function ConversationThreadPage() {
       <div className="flex-1 overflow-y-auto space-y-3 py-4">
         {(conversation.messages || []).map((msg, i) => (
           <div key={i} className={cn('flex', msg.direction === 'outbound' ? 'justify-end' : 'justify-start')}>
-            <div className={cn('max-w-[70%] rounded-2xl px-4 py-2 text-sm', msg.direction === 'outbound' ? 'bg-emerald-600 text-white rounded-br-md' : 'bg-zinc-100 text-zinc-900 rounded-bl-md')}>
+            <div className={cn('max-w-[70%] rounded-2xl px-4 py-2 text-sm', msg.direction === 'outbound' ? 'bg-primary text-primary-foreground rounded-br-sm' : 'bg-muted text-foreground rounded-bl-sm')}>
               <p>{msg.message}</p>
               <p className={cn('mt-1 text-[10px]', msg.direction === 'outbound' ? 'text-emerald-200' : 'text-muted-foreground')}>
                 {msg.createdAt?.toDate ? msg.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}

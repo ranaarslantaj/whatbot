@@ -1,0 +1,53 @@
+# WhatBot Custom Instruction Rules
+
+These rules dictate how AI assistants should write code for the WhatBot project to ensure the code remains highly reusable, future-proof, and consistent.
+
+## 1. Principles of Reusability
+- **Single Responsibility**: Every function, file, and component must have one clear purpose. Do not combine logic and UI formatting into one huge React component. Keep UI components "dumb" and pass state down via props or hooks.
+- **Options Objects**: Avoid passing multiple separate arguments to functions. Use configuration/options interfaces (e.g. `interface CreateUserOptions { name: string; age: number; }`) instead of `function createUser(name, age)`.
+- **Pure Functions**: Isolate business logic into pure utilities in `src/utils/` when possible, removing side-effects and ensuring testability.
+
+## 2. Component Architecture
+- **Separation of Concerns**: Use "Dumb" components for reusable UI elements. These must remain completely unaware of Zustand state, Firebase logic, or App Routing.
+- **Composition over Configuration**: Use React's `children` prop instead of creating massive prop lists (like `<Card hideHeader hideFooter>` etc).
+- **Responsive Layout**: Do not hardcode specific width/height values. Use `w-full max-w-*` wrappers to respect the mobile-first CSS logic setup via Tailwind. Let flex/grid parents dictate child sizes safely.
+
+## 3. Tailwind & Dark Mode Protocol (STRICT)
+
+### Globally Banned Classes — Never Use These:
+| ❌ Banned (Hardcoded)         | ✅ Use Instead (Semantic)                |
+|------------------------------|------------------------------------------|
+| `bg-white`                   | `bg-background` or `bg-card`            |
+| `bg-black`                   | `bg-foreground`                          |
+| `bg-zinc-50`, `bg-zinc-100`  | `bg-muted` or `bg-muted/50`             |
+| `bg-zinc-200`, `bg-zinc-300` | `bg-secondary`                           |
+| `hover:bg-zinc-50`           | `hover:bg-accent/50`                     |
+| `hover:bg-zinc-100`          | `hover:bg-accent`                        |
+| `text-zinc-900`              | `text-foreground`                        |
+| `text-zinc-700`, `text-zinc-600` | `text-foreground` or `text-muted-foreground` |
+| `text-zinc-400`, `text-zinc-500` | `text-muted-foreground`              |
+| `bg-gray-*`, `text-gray-*`   | Use semantic equivalents above           |
+| `bg-slate-*`, `text-slate-*` | Use semantic equivalents above           |
+| `bg-blue-500 text-white`     | `bg-primary text-primary-foreground`     |
+| `bg-zinc-100` (chat bubble)  | `bg-muted text-foreground`              |
+
+### Font Rule (Dual-Font System):
+- **Body / UI text** → `font-sans` = **Inter** (via `--font-inter` CSS variable). Default for all text, inputs, buttons, labels.
+- **Headings (h1–h6)** → `font-display` = **Plus Jakarta Sans** (via `--font-jakarta` CSS variable). Applied automatically in CSS via `globals.css`. Do NOT override headings with `font-sans`.
+- You may explicitly use `font-['Plus_Jakarta_Sans']` or add a `font-display` Tailwind utility for any non-heading element that needs the premium display aesthetic (e.g., hero numbers, big stat values).
+- **Never** use `font-geist`, `font-mono` for any UI text not explicitly meant to be monospaced (e.g. code blocks only).
+
+### Color Token Summary:
+- **Backgrounds**: `bg-background` (page), `bg-card` (panels), `bg-muted` (subtle fills), `bg-accent` (hover areas)
+- **Text**: `text-foreground` (primary), `text-muted-foreground` (secondary/labels)
+- **Brand**: `bg-primary`, `text-primary`, `text-primary-foreground` (always use for brand actions)
+- **Borders**: `border-border` or `border-border/60` for softer borders
+- **Chat bubbles**: Outbound → `bg-primary text-primary-foreground`, Inbound → `bg-muted text-foreground`
+
+## 4. TypeScript Strictness
+- **Explicit Interfaces**: All database models, API responses, and Component props must have explicit `interface` definitions in `src/types/`. 
+- **No `any`**: The use of `any` is strictly banned. Use `unknown` and validate if you are unsure, or build a thorough `type`.
+
+## 5. State Management
+- **Local State (`useState`)**: Keep for component-specific visual states (like forms, or UI toggles).
+- **Global State (`Zustand`)**: Use specifically for widespread variables (like `useAuthStore` or active dashboard selections). Keep data-fetching localized to custom hooks!

@@ -49,7 +49,7 @@ export default function SetupPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Toaster position="top-right" />
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">

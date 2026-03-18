@@ -19,7 +19,7 @@ export default function KnowledgeBasePage() {
       <PageHeader title="Knowledge Base" description="Guides and reference documentation" />
       <div className="space-y-3">{sections.map((s) => {
         const open = expanded === s.title;
-        return (<Card key={s.title}><CardHeader className="cursor-pointer hover:bg-zinc-50" onClick={() => setExpanded(open ? null : s.title)}><div className="flex items-center justify-between"><div className="flex items-center gap-3"><s.icon className="h-5 w-5 text-muted-foreground" /><CardTitle className="text-base">{s.title}</CardTitle></div>{open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}</div></CardHeader>{open && <CardContent><pre className="whitespace-pre-wrap text-sm text-muted-foreground font-sans leading-relaxed">{s.content}</pre></CardContent>}</Card>);
+        return (<Card key={s.title}><CardHeader className="cursor-pointer hover:bg-accent/50" onClick={() => setExpanded(open ? null : s.title)}><div className="flex items-center justify-between"><div className="flex items-center gap-3"><s.icon className="h-5 w-5 text-muted-foreground" /><CardTitle className="text-base">{s.title}</CardTitle></div>{open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}</div></CardHeader>{open && <CardContent><pre className="whitespace-pre-wrap text-sm text-muted-foreground font-sans leading-relaxed">{s.content}</pre></CardContent>}</Card>);
       })}</div>
     </div>
   );

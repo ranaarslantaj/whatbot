@@ -192,7 +192,7 @@ export default function AdminAgentsPage() {
         const agent = row.original;
         return (
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-zinc-100">
+            <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-accent">
               <MoreHorizontal className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -295,7 +295,7 @@ export default function AdminAgentsPage() {
               clients.map((client) => (
                 <label
                   key={client.id}
-                  className="flex cursor-pointer items-center gap-3 rounded-lg border p-3 hover:bg-zinc-50 transition-colors"
+                  className="flex cursor-pointer items-center gap-3 rounded-lg border p-3 hover:bg-accent/50 transition-colors"
                 >
                   <input
                     type="checkbox"
