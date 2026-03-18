@@ -82,18 +82,16 @@ export function TopBar({
 
           {/* User dropdown */}
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
-                <Avatar className="h-7 w-7 ring-2 ring-primary/20">
-                  <AvatarFallback className="bg-primary text-primary-foreground text-[10px] font-bold">
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="hidden sm:block text-sm font-medium text-foreground max-w-[100px] truncate">
-                  {user?.name?.split(' ')[0]}
-                </span>
-                <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
-              </button>
+            <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors outline-none">
+              <Avatar className="h-7 w-7 ring-2 ring-primary/20">
+                <AvatarFallback className="bg-primary text-primary-foreground text-[10px] font-bold">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+              <span className="hidden sm:block text-sm font-medium text-foreground max-w-[100px] truncate">
+                {user?.name?.split(' ')[0]}
+              </span>
+              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
               <DropdownMenuLabel className="font-normal">
