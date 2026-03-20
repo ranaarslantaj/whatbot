@@ -28,12 +28,12 @@ export function StatsCard({ label, value, subtext, trend, icon: Icon, colorSchem
       {/* Background soft glow based on color scheme */}
       <div className={cn('absolute -right-4 -top-4 h-24 w-24 rounded-full blur-3xl opacity-20 transition-opacity duration-500 group-hover:opacity-40', colors.bg)} />
       
-      <CardContent className="p-6 md:p-8">
-        <div className="flex items-start justify-between">
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex items-start justify-between gap-3 sm:gap-5">
           <div className="space-y-4 flex-1">
             <div className="flex flex-col gap-1">
                <p className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-[0.12em]">{label}</p>
-               <h3 className="text-3xl font-extrabold tracking-tight text-foreground">{value}</h3>
+               <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground">{value}</h3>
             </div>
 
             <div className="flex items-center gap-2">

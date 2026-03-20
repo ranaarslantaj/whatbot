@@ -10,8 +10,8 @@ export function Sidebar({ role, collapsed = false }: { role: UserRole; collapsed
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 z-30 flex h-screen flex-col border-r border-border/40 bg-sidebar/90 backdrop-blur-xl transition-all duration-300 ease-in-out shadow-apple-sm',
-        collapsed ? 'w-20' : 'w-64'
+        'flex h-full w-full flex-col border-r border-border/40 bg-sidebar/90 backdrop-blur-xl transition-all duration-300 ease-in-out shadow-apple-sm',
+        collapsed ? 'w-20' : 'w-full'
       )}
     >
       {/* Logo area - cleaner presentation */}

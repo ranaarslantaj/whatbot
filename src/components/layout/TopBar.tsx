@@ -63,7 +63,7 @@ export function TopBar({
       )}
 
       {/* Main topbar - glassmorphism polish */}
-      <div className="flex h-20 items-center justify-between border-b border-border/40 bg-background/70 backdrop-blur-xl px-6 md:px-10 gap-3">
+      <div className="flex h-16 sm:h-20 items-center justify-between border-b border-border/40 bg-background/70 backdrop-blur-xl px-4 sm:px-6 md:px-10 gap-3">
         {/* Mobile menu toggle */}
         <Button
           variant="ghost"
