@@ -50,11 +50,14 @@ export function RoleSidebar({ role, collapsed = false }: { role: UserRole; colla
   const items = navItems[role] || [];
 
   return (
-    <nav className="flex flex-col gap-0.5 px-2 py-3">
+    <nav className="flex flex-col gap-1.5 flex-1">
       {items.map((item) => {
-        const isActive =
-          pathname === item.href ||
-          (item.href !== '/' && pathname.startsWith(item.href + '/'));
+        // Root-level hrefs (e.g. /admin, /support, /client) must match exactly
+        // so they don't stay highlighted when a sub-page is active.
+        const isRootHref = /^\/[^/]+$/.test(item.href);
+        const isActive = isRootHref
+          ? pathname === item.href
+          : pathname === item.href || pathname.startsWith(item.href + '/');
 
         return (
           <Link
@@ -62,25 +65,30 @@ export function RoleSidebar({ role, collapsed = false }: { role: UserRole; colla
             href={item.href}
             title={collapsed ? item.label : undefined}
             className={cn(
-              'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150',
+              'group relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-[13px] font-semibold transition-all duration-300 ease-out',
               collapsed && 'justify-center px-0',
               isActive
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                ? 'bg-primary text-primary-foreground shadow-apple-sm scale-[1.02]'
+                : 'text-muted-foreground/80 hover:bg-sidebar-accent hover:text-foreground'
             )}
           >
             <item.icon
               className={cn(
-                'shrink-0 transition-transform duration-150 group-hover:scale-110',
+                'shrink-0 transition-all duration-300',
                 collapsed ? 'h-5 w-5' : 'h-4 w-4',
-                isActive ? 'text-primary-foreground' : ''
+                isActive ? 'text-primary-foreground' : 'group-hover:scale-110 group-hover:text-primary/70'
               )}
             />
-            {!collapsed && <span className="truncate">{item.label}</span>}
-            {/* Active left indicator — only shown when not collapsed */}
-            {isActive && !collapsed && (
-              <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary-foreground/60" />
+            {!collapsed && (
+              <span className="truncate tracking-tight">{item.label}</span>
             )}
+            
+            {/* Active right glow — refined */}
+            {isActive && !collapsed && (
+              <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary-foreground/40 animate-pulse" />
+            )}
+            
+            {/* Hover tooltip for collapsed mode could go here, but title prop handles it for now */}
           </Link>
         );
       })}

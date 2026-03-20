@@ -24,34 +24,39 @@ export function StatsCard({ label, value, subtext, trend, icon: Icon, colorSchem
   const colors = colorMap[colorScheme];
 
   return (
-    <Card className="stat-card-hover border-border/60 overflow-hidden relative group">
-      {/* Subtle top accent line */}
-      <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      <CardContent className="p-5">
+    <Card className="apple-card border-none overflow-hidden relative group">
+      {/* Background soft glow based on color scheme */}
+      <div className={cn('absolute -right-4 -top-4 h-24 w-24 rounded-full blur-3xl opacity-20 transition-opacity duration-500 group-hover:opacity-40', colors.bg)} />
+      
+      <CardContent className="p-6 md:p-8">
         <div className="flex items-start justify-between">
-          <div className="space-y-1 flex-1">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{label}</p>
-            <div className="flex items-baseline gap-2 mt-1">
-              <h3 className="text-2xl font-bold tracking-tight">{value}</h3>
+          <div className="space-y-4 flex-1">
+            <div className="flex flex-col gap-1">
+               <p className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-[0.12em]">{label}</p>
+               <h3 className="text-3xl font-extrabold tracking-tight text-foreground">{value}</h3>
+            </div>
+
+            <div className="flex items-center gap-2">
               {trend && trend !== 'neutral' && (
                 <span className={cn(
-                  'inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full',
+                  'inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full border',
                   trend === 'positive'
-                    ? 'text-emerald-700 bg-emerald-100 dark:text-emerald-400 dark:bg-emerald-950/60'
-                    : 'text-red-700 bg-red-100 dark:text-red-400 dark:bg-red-950/60'
+                    ? 'text-emerald-600 bg-emerald-500/10 border-emerald-500/20'
+                    : 'text-red-600 bg-red-500/10 border-red-500/20'
                 )}>
-                  {trend === 'positive' ? <TrendingUp className="h-2.5 w-2.5" /> : <TrendingDown className="h-2.5 w-2.5" />}
+                  {trend === 'positive' ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
                   {subtext}
                 </span>
               )}
               {(!trend || trend === 'neutral') && subtext && (
-                <span className="text-xs text-muted-foreground font-medium">{subtext}</span>
+                <span className="text-[11px] text-muted-foreground/50 font-bold tracking-tight">{subtext}</span>
               )}
             </div>
           </div>
+          
           {Icon && (
-            <div className={cn('h-10 w-10 rounded-xl flex items-center justify-center ring-1 shrink-0', colors.bg, colors.ring)}>
-              <Icon className={cn('h-5 w-5', colors.icon)} />
+            <div className={cn('h-12 w-12 rounded-2xl flex items-center justify-center border transition-all duration-300 group-hover:scale-110 shadow-apple-sm', colors.bg, colors.ring)}>
+              <Icon className={cn('h-6 w-6', colors.icon)} />
             </div>
           )}
         </div>

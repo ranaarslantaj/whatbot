@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -43,69 +44,84 @@ export function TopBar({
 
   return (
     <header className="sticky top-0 z-20 flex flex-col">
-      {/* Impersonation banner */}
+      {/* Impersonation banner - refined and elegant */}
       {isImpersonating && (
-        <div className="flex items-center justify-between bg-amber-400 dark:bg-amber-500 px-4 py-2 text-sm font-medium text-amber-950">
-          <span className="flex items-center gap-2">
+        <div className="flex items-center justify-between bg-amber-400 dark:bg-amber-500/90 backdrop-blur-md px-6 py-2.5 text-xs font-bold tracking-wide text-amber-950 shadow-apple-sm">
+          <span className="flex items-center gap-3">
             <span className="h-2 w-2 rounded-full bg-amber-700 animate-pulse" />
-            Viewing as <strong>{clientName}</strong>
+            VIEWING AS <strong className="font-extrabold">{clientName?.toUpperCase()}</strong>
           </span>
           <Button
             variant="ghost"
             size="sm"
-            className="h-7 px-3 text-amber-950 hover:bg-amber-500 dark:hover:bg-amber-600 font-medium"
+            className="h-7 px-4 text-[10px] font-bold tracking-[0.1em] text-amber-950 hover:bg-amber-500/20 border border-amber-950/20 rounded-full"
             onClick={() => { stopImpersonation(); router.push('/admin/clients'); }}
           >
-            <X className="mr-1 h-3 w-3" /> Exit View
+            <X className="mr-1.5 h-3 w-3" /> EXIT VIEW
           </Button>
         </div>
       )}
 
-      {/* Main topbar */}
-      <div className="flex h-14 items-center justify-between border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 px-4 gap-3">
+      {/* Main topbar - glassmorphism polish */}
+      <div className="flex h-20 items-center justify-between border-b border-border/40 bg-background/70 backdrop-blur-xl px-6 md:px-10 gap-3">
         {/* Mobile menu toggle */}
         <Button
           variant="ghost"
           size="icon"
-          className="lg:hidden text-muted-foreground hover:text-foreground"
+          className="lg:hidden text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-xl"
           onClick={onToggleSidebar}
         >
           <Menu className="h-5 w-5" />
         </Button>
 
-        {/* Spacer */}
-        <div className="flex-1" />
+        {/* Global Search Placeholder or Title could go here */}
+        <div className="flex-1 hidden md:block">
+           <div className="relative max-w-sm">
+              {/* Could add a search bar here for full Apple look */}
+           </div>
+        </div>
 
         {/* Right actions */}
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
+        <div className="flex items-center gap-4">
+          <div className="h-9 w-9 flex items-center justify-center rounded-xl bg-accent/30 hover:bg-accent/60 transition-colors border border-border/20">
+            <ThemeToggle />
+          </div>
 
-          {/* User dropdown */}
+          <div className="h-6 w-[1px] bg-border/40 mx-1" />
+
+          {/* User dropdown - refined */}
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors outline-none">
-              <Avatar className="h-7 w-7 ring-2 ring-primary/20">
-                <AvatarFallback className="bg-primary text-primary-foreground text-[10px] font-bold">
+            <DropdownMenuTrigger className="flex items-center gap-3 rounded-2xl p-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-accent/40 transition-all outline-none border border-transparent hover:border-border/40 shadow-apple-sm group">
+              <Avatar className="h-9 w-9 ring-2 ring-primary/10 group-hover:ring-primary/30 transition-all shadow-apple-sm">
+                <AvatarFallback className="bg-primary text-primary-foreground text-[11px] font-bold">
                   {initials}
                 </AvatarFallback>
               </Avatar>
-              <span className="hidden sm:block text-sm font-medium text-foreground max-w-[100px] truncate">
-                {user?.name?.split(' ')[0]}
-              </span>
-              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+              <div className="hidden sm:flex flex-col items-start leading-tight pr-2">
+                <span className="text-[13px] font-bold text-foreground">
+                  {user?.name?.split(' ')[0]}
+                </span>
+                <span className="text-[10px] text-muted-foreground/60 font-medium tracking-tight">
+                  Pro Account
+                </span>
+              </div>
+              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors mr-1" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-52">
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col gap-0.5">
-                  <p className="text-sm font-semibold">{user?.name}</p>
-                  <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
+            <DropdownMenuContent align="end" className="w-64 glass-card p-2 rounded-2xl shadow-apple-lg mt-2">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel className="font-normal px-3 py-3">
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm font-bold tracking-tight">{user?.name}</p>
+                    <p className="text-[11px] text-muted-foreground/70 truncate font-medium">{user?.email}</p>
+                  </div>
+                </DropdownMenuLabel>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator className="bg-border/40 mx-2" />
               <DropdownMenuItem
                 onClick={handleSignOut}
-                className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
+                className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer rounded-xl font-bold text-[13px] mx-1 my-1"
               >
-                <LogOut className="mr-2 h-4 w-4" />
+                <LogOut className="mr-2.5 h-4 w-4" />
                 Sign out
               </DropdownMenuItem>
             </DropdownMenuContent>
