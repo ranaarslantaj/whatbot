@@ -1,6 +1,6 @@
 import {
-  collection, doc, getDoc, addDoc, updateDoc, deleteDoc,
-  query, where, orderBy, onSnapshot, serverTimestamp,
+  collection, doc, getDoc, addDoc, updateDoc, deleteDoc, setDoc,
+  query, where, orderBy, limit, onSnapshot, serverTimestamp,
   type Query, type DocumentData,
 } from 'firebase/firestore';
 import { db } from './firebase';
@@ -59,7 +59,6 @@ export async function deleteUser(uid: string) {
 }
 
 export async function createUserDoc(uid: string, data: Omit<User, 'uid'>) {
-  const { setDoc } = await import('firebase/firestore');
   await setDoc(doc(db, 'users', uid), { ...data, createdAt: serverTimestamp(), lastLoginAt: serverTimestamp() });
 }
 
@@ -215,4 +214,51 @@ export async function createQuickReply(data: Omit<QuickReply, 'id' | 'createdAt'
 
 export async function deleteQuickReply(id: string) {
   await deleteDoc(doc(db, 'quickReplies', id));
+}
+
+// ── Logs ─────────────────────────────────────────────
+
+export interface ActivityLog {
+  id: string;
+  action: string;
+  user: string;
+  timestamp: any;
+  details?: string;
+  type: 'info' | 'warning' | 'error' | 'success';
+}
+
+export function subscribeLogs(callback: (logs: ActivityLog[]) => void, limitCount: number = 10) {
+  const q = query(collection(db, 'logs'), orderBy('timestamp', 'desc'), limit(limitCount));
+  return onSnapshot(q, (snapshot) => {
+    callback(snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as ActivityLog)));
+  });
+}
+
+export async function createLog(data: Omit<ActivityLog, 'id' | 'timestamp'>) {
+  await addDoc(collection(db, 'logs'), { ...data, timestamp: serverTimestamp() });
+}
+
+// ── Notifications ────────────────────────────────────
+
+export function subscribeNotifications(userId: string, callback: (notifications: any[]) => void) {
+  const q = query(
+    collection(db, 'notifications'), 
+    where('userId', '==', userId), 
+    orderBy('createdAt', 'desc')
+  );
+  return onSnapshot(q, (snapshot) => {
+    callback(snapshot.docs.map((d) => ({ ...d.data(), id: d.id })));
+  });
+}
+
+export async function markNotificationAsRead(id: string) {
+  await updateDoc(doc(db, 'notifications', id), { isRead: true });
+}
+
+export async function createNotification(data: Omit<any, 'id' | 'createdAt' | 'isRead'>) {
+  await addDoc(collection(db, 'notifications'), { 
+    ...data, 
+    isRead: false, 
+    createdAt: serverTimestamp() 
+  });
 }

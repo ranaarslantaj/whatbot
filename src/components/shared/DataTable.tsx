@@ -17,27 +17,42 @@ interface DataTableProps<TData, TValue> {
   searchable?: boolean;
   searchPlaceholder?: string;
   loading?: boolean;
+  onBulkAction?: (selectedRows: TData[]) => void;
+  bulkActionLabel?: string;
 }
 
-export function DataTable<TData, TValue>({ columns, data, searchable = false, searchPlaceholder = 'Search...', loading = false }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ 
+  columns, data, searchable = false, searchPlaceholder = 'Search...', loading = false,
+  onBulkAction, bulkActionLabel = 'Delete'
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data, columns, getCoreRowModel: getCoreRowModel(), getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(), getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting, onGlobalFilterChange: setGlobalFilter, state: { sorting, globalFilter },
+    onSortingChange: setSorting, onGlobalFilterChange: setGlobalFilter,
+    onRowSelectionChange: setRowSelection,
+    state: { sorting, globalFilter, rowSelection },
   });
 
   if (loading) {
     return (
-      <div className="space-y-3">
-        {searchable && <Skeleton className="h-10 w-64" />}
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader><TableRow>{columns.map((_, i) => <TableHead key={i}><Skeleton className="h-4 w-24" /></TableHead>)}</TableRow></TableHeader>
-            <TableBody>{Array.from({ length: 5 }).map((_, i) => <TableRow key={i}>{columns.map((_, j) => <TableCell key={j}><Skeleton className="h-4 w-full" /></TableCell>)}</TableRow>)}</TableBody>
-          </Table>
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <Skeleton className="h-11 w-full sm:w-80 rounded-2xl" />
+          <Skeleton className="h-4 w-24 opacity-30" />
+        </div>
+        <div className="relative rounded-3xl border border-border/10 overflow-hidden bg-card/30">
+          <div className="h-14 border-b border-border/10 px-6 flex items-center gap-4">
+            {columns.map((_, i) => <Skeleton key={i} className="h-3 w-20 opacity-20" />)}
+          </div>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-16 border-b border-border/5 last:border-0 px-6 flex items-center gap-4">
+              {columns.map((_, j) => <Skeleton key={j} className="h-4 w-full opacity-10" />)}
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -63,6 +78,39 @@ export function DataTable<TData, TValue>({ columns, data, searchable = false, se
           PAGE {table.getState().pagination.pageIndex + 1} of {table.getPageCount() || 1}
         </p>
       </div>
+
+      {/* Bulk Action Bar - Floating style when selection exists */}
+      {Object.keys(rowSelection).length > 0 && onBulkAction && (
+        <div className="sticky top-2 z-10 mx-auto max-w-fit animate-in fade-in slide-in-from-top-4 duration-500">
+           <div className="flex items-center gap-6 px-4 py-2 bg-foreground text-background rounded-2xl shadow-apple-lg border border-white/10 backdrop-blur-md">
+             <div className="flex items-center gap-3">
+               <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-primary text-[11px] font-black text-primary-foreground">
+                 {Object.keys(rowSelection).length}
+               </div>
+               <span className="text-[11px] font-bold uppercase tracking-[0.1em] opacity-80">Rows Selected</span>
+             </div>
+             <div className="h-4 w-[1px] bg-white/20" />
+             <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => onBulkAction(table.getFilteredSelectedRowModel().rows.map(r => r.original))}
+                  className="h-8 px-4 text-[11px] font-extrabold uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all rounded-xl"
+                >
+                  {bulkActionLabel}
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setRowSelection({})}
+                  className="h-8 px-4 text-[11px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-muted-foreground hover:bg-white/5 rounded-xl"
+                >
+                  Cancel
+                </Button>
+             </div>
+           </div>
+        </div>
+      )}
 
       <div className="relative overflow-hidden rounded-3xl border border-border/40 bg-card shadow-apple-sm">
         <div className="overflow-x-auto">

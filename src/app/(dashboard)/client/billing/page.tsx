@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { CreditCard, Receipt, TrendingUp, MessageSquare } from 'lucide-react';
 import type { Client, ClientPlan } from '@/types';
 import toast from 'react-hot-toast';
+import { cn } from '@/lib/utils';
 
 const plans: { name: ClientPlan; price: number; quota: number; features: string[] }[] = [
   { name: 'starter', price: 49, quota: 1000, features: ['1,000 messages/mo', 'Basic automations', 'Email support'] },
@@ -87,29 +88,83 @@ export default function BillingPage() {
               <CardDescription>Your current plan and available upgrades</CardDescription>
             </div>
             <Dialog open={upgradeOpen} onOpenChange={setUpgradeOpen}>
-              <DialogTrigger className="inline-flex shrink-0 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-xs hover:bg-primary/90">
-                <TrendingUp className="mr-2 h-4 w-4" /> Change Plan
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl">
-                <DialogHeader>
-                  <DialogTitle>Choose a Plan</DialogTitle>
-                  <DialogDescription>Select the plan that best fits your needs</DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 md:grid-cols-3 py-4">
-                  {plans.map((p) => (
-                    <div key={p.name} className={`rounded-lg border p-4 space-y-3 ${client.plan === p.name ? 'border-emerald-600 bg-emerald-50' : ''}`}>
-                      <div>
-                        <h3 className="font-semibold capitalize">{p.name}</h3>
-                        <p className="text-2xl font-bold">${p.price}<span className="text-sm font-normal text-muted-foreground">/mo</span></p>
+              <DialogTrigger 
+                render={
+                  <Button size="sm" className="h-9 px-4 rounded-xl shadow-apple-sm font-bold uppercase tracking-widest text-[11px] bg-primary hover:bg-primary/90 transition-all">
+                    <TrendingUp className="mr-2 h-3.5 w-3.5" /> Change Plan
+                  </Button>
+                }
+              />
+              <DialogContent className="max-w-4xl p-0 overflow-hidden border-none shadow-apple-lg rounded-[2rem] bg-background/80 backdrop-blur-2xl">
+                <div className="relative h-32 bg-primary/10 flex items-center justify-center overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent opacity-50" />
+                  <div className="relative text-center space-y-1">
+                    <DialogTitle className="text-[20px] font-black tracking-tight text-foreground uppercase">Elevate Your Strategy</DialogTitle>
+                    <DialogDescription className="text-[12px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Select the engine that powers your growth</DialogDescription>
+                  </div>
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-3 p-8">
+                  {plans.map((p) => {
+                    const isCurrent = client.plan === p.name;
+                    const isPro = p.name === 'pro';
+                    
+                    return (
+                      <div 
+                        key={p.name} 
+                        className={cn(
+                          "relative group rounded-3xl border border-border/40 p-6 flex flex-col items-center text-center transition-all duration-500 hover:shadow-apple-lg hover:-translate-y-1",
+                          isCurrent ? "bg-primary/5 border-primary/20 ring-1 ring-primary/20" : "bg-card/50",
+                          isPro && !isCurrent && "border-primary/20 shadow-apple-sm"
+                        )}
+                      >
+                        {isPro && (
+                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-apple-sm">
+                            Most Popular
+                          </div>
+                        )}
+                        
+                        <div className="mb-6 space-y-1">
+                          <h3 className="text-[12px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{p.name}</h3>
+                          <div className="flex items-baseline justify-center gap-1">
+                            <span className="text-[32px] font-black tracking-tighter text-foreground">${p.price}</span>
+                            <span className="text-[12px] font-bold text-muted-foreground uppercase opacity-50">/mo</span>
+                          </div>
+                        </div>
+
+                        <div className="flex-1 w-full space-y-4 mb-8">
+                          {p.features.map((f, i) => (
+                            <div key={i} className="flex items-center gap-3 text-left">
+                              <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                                <TrendingUp className="h-2.5 w-2.5 text-primary" />
+                              </div>
+                              <span className="text-[13px] font-medium text-muted-foreground/80 leading-tight">
+                                {f}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <Button 
+                          variant={isCurrent ? 'outline' : isPro ? 'default' : 'secondary'} 
+                          className={cn(
+                             "w-full h-11 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all",
+                             !isCurrent && "group-hover:scale-[1.02]"
+                          )}
+                          disabled={isCurrent} 
+                          onClick={() => handleUpgrade(p.name)}
+                        >
+                          {isCurrent ? 'Active Plan' : 'Scale Now'}
+                        </Button>
                       </div>
-                      <ul className="space-y-1 text-sm text-muted-foreground">
-                        {p.features.map((f) => <li key={f}>• {f}</li>)}
-                      </ul>
-                      <Button variant={client.plan === p.name ? 'outline' : 'default'} className="w-full" disabled={client.plan === p.name} onClick={() => handleUpgrade(p.name)}>
-                        {client.plan === p.name ? 'Current Plan' : 'Select'}
-                      </Button>
-                    </div>
-                  ))}
+                    );
+                  })}
+                </div>
+                
+                <div className="px-8 py-4 bg-muted/20 border-t border-border/10">
+                   <p className="text-[11px] text-center font-bold text-muted-foreground/40 uppercase tracking-widest">
+                     Payments secured by Stripe. No hidden fees. Cancel anytime.
+                   </p>
                 </div>
               </DialogContent>
             </Dialog>

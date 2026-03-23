@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { onSnapshot, type Query, type DocumentData } from 'firebase/firestore';
+import { onSnapshot, type Query, type DocumentData } from '@/lib/firebase';
 
 interface UseFirestoreResult<T> {
   data: T[];

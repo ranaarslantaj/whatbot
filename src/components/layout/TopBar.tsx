@@ -15,9 +15,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, Menu, X, ChevronDown } from 'lucide-react';
+import { LogOut, Menu, X, ChevronDown, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { GlobalSearch } from './GlobalSearch';
+import { NotificationCenter } from './NotificationCenter';
+import { useState } from 'react';
 
 export function TopBar({
   onToggleSidebar,
@@ -25,6 +28,7 @@ export function TopBar({
   onToggleSidebar: () => void;
   sidebarOpen: boolean;
 }) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const { isImpersonating, clientName, stopImpersonation } = useImpersonateStore();
@@ -74,17 +78,30 @@ export function TopBar({
           <Menu className="h-5 w-5" />
         </Button>
 
-        {/* Global Search Placeholder or Title could go here */}
-        <div className="flex-1 hidden md:block">
-           <div className="relative max-w-sm">
-              {/* Could add a search bar here for full Apple look */}
-           </div>
+        {/* Global Search - Interactive trigger */}
+        <div className="flex-1 hidden md:flex justify-center max-w-sm ml-4 lg:ml-0">
+           <button 
+             onClick={() => setIsSearchOpen(true)}
+             className="flex h-11 w-full max-w-[280px] items-center gap-3 rounded-2xl border border-border/20 bg-accent/30 px-3.5 text-muted-foreground/50 transition-all hover:bg-accent/50 hover:border-border/40 shadow-apple-sm group"
+           >
+             <Search className="h-4 w-4 group-hover:text-primary transition-colors" />
+             <span className="text-[13px] font-bold tracking-tight">Search...</span>
+             <div className="ml-auto flex items-center gap-1 rounded border border-border/20 bg-background px-1.5 py-0.5 text-[9px] font-extrabold tracking-tighter text-muted-foreground/40">
+               {navigator?.platform?.toLowerCase().includes('mac') ? '⌘' : 'CTRL'} K
+             </div>
+           </button>
         </div>
+
+        {/* Global Search Dialog */}
+        <GlobalSearch open={isSearchOpen} onOpenChange={setIsSearchOpen} />
 
         {/* Right actions */}
         <div className="flex items-center gap-4">
-          <div className="h-9 w-9 flex items-center justify-center rounded-xl bg-accent/30 hover:bg-accent/60 transition-colors border border-border/20">
-            <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <NotificationCenter />
+            <div className="h-9 w-9 flex items-center justify-center rounded-xl bg-accent/30 hover:bg-accent/60 transition-colors border border-border/20">
+              <ThemeToggle />
+            </div>
           </div>
 
           <div className="h-6 w-[1px] bg-border/40 mx-1" />

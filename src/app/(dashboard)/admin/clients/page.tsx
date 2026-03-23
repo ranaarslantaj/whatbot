@@ -21,7 +21,7 @@ import type { Client, ClientPlan } from '@/types';
 import toast from 'react-hot-toast';
 import { Plus, Loader2, MoreHorizontal, Ban, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from '@/lib/firebase';
 
 const addClientSchema = z.object({ businessName: z.string().min(2), ownerName: z.string().min(2), ownerEmail: z.string().email(), plan: z.enum(['starter', 'pro', 'enterprise']), whatsappNumber: z.string().optional() });
 type AddClientForm = z.infer<typeof addClientSchema>;

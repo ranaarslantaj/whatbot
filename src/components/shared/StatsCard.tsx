@@ -3,6 +3,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface StatsCardProps {
   label: string;
@@ -11,6 +12,7 @@ interface StatsCardProps {
   trend?: 'positive' | 'negative' | 'neutral';
   icon?: LucideIcon;
   colorScheme?: 'green' | 'blue' | 'purple' | 'amber';
+  loading?: boolean;
 }
 
 const colorMap = {
@@ -20,8 +22,27 @@ const colorMap = {
   amber:  { bg: 'bg-amber-50 dark:bg-amber-950/40',      icon: 'text-amber-600 dark:text-amber-400',      ring: 'ring-amber-200 dark:ring-amber-800' },
 };
 
-export function StatsCard({ label, value, subtext, trend, icon: Icon, colorScheme = 'green' }: StatsCardProps) {
+export function StatsCard({ label, value, subtext, trend, icon: Icon, colorScheme = 'green', loading = false }: StatsCardProps) {
   const colors = colorMap[colorScheme];
+
+  if (loading) {
+    return (
+      <Card className="apple-card border-none overflow-hidden relative">
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex items-start justify-between gap-3">
+            <div className="space-y-4 flex-1">
+              <div className="space-y-2">
+                <Skeleton className="h-3 w-16 opacity-30" />
+                <Skeleton className="h-10 w-24" />
+              </div>
+              <Skeleton className="h-5 w-20 rounded-full opacity-30" />
+            </div>
+            <Skeleton className="h-12 w-12 rounded-2xl opacity-20" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="apple-card border-none overflow-hidden relative group">

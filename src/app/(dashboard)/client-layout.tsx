@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
-import { Toaster } from 'react-hot-toast';
 
 export function DashboardClientLayout({ children }: { children: React.ReactNode }) {
   const { user, loading, initialized } = useAuth();
@@ -21,10 +20,5 @@ export function DashboardClientLayout({ children }: { children: React.ReactNode 
 
   if (!user) return null;
 
-  return (
-    <>
-      <Toaster position="top-right" />
-      <DashboardLayout role={user.role}>{children}</DashboardLayout>
-    </>
-  );
+  return <DashboardLayout role={user.role}>{children}</DashboardLayout>;
 }

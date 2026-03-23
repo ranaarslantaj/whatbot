@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import type { User } from '@/types';
 
 interface AuthState {
@@ -12,13 +13,22 @@ interface AuthState {
   setInitialized: (initialized: boolean) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  loading: true,
-  initialized: false,
-  setUser: (user) => set({ user, loading: false, initialized: true }),
-  clearUser: () => set({ user: null, loading: false, initialized: true }),
-  reset: () => set({ user: null, loading: true, initialized: false }),
-  setLoading: (loading) => set({ loading }),
-  setInitialized: (initialized) => set({ initialized }),
-}));
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      loading: true,
+      initialized: false,
+      setUser: (user) => set({ user, loading: false, initialized: true }),
+      clearUser: () => set({ user: null, loading: false, initialized: true }),
+      reset: () => set({ user: null, loading: true, initialized: false }),
+      setLoading: (loading) => set({ loading }),
+      setInitialized: (initialized) => set({ initialized }),
+    }),
+    {
+      name: 'whatbot-auth',
+      // Only persist user data, not transient loading states
+      partialize: (state) => ({ user: state.user, initialized: state.initialized }),
+    }
+  )
+);

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -18,9 +17,23 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "WhatBot — WhatsApp Business Automation",
-  description: "Multi-role WhatsApp Business automation dashboard",
+  title: {
+    default: "WhatBot — WhatsApp Business Automation",
+    template: "%s | WhatBot"
+  },
+  description: "Multi-role WhatsApp Business automation dashboard for personalized messaging, growth, and team collaboration.",
+  keywords: ["whatsapp", "business", "automation", "dashboard", "team Inbox", "marketing", "api"],
+  authors: [{ name: "WhatBot Team" }],
+  creator: "WhatBot",
+  publisher: "WhatBot",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
+
+import { Providers } from "@/components/providers";
 
 export default function RootLayout({
   children,
@@ -33,14 +46,7 @@ export default function RootLayout({
         className={`${inter.variable} ${jakarta.variable} font-sans antialiased min-h-screen bg-background text-foreground flex flex-col`}
         suppressHydrationWarning
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
